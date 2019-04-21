@@ -45,7 +45,7 @@ class item
 	//insert new rating and existing avg rating
 	public function insert_rate($rate)
 	{
-		$this->rating = ((float)$this->rating*$this->raters_count+(float)$rate)/((float)$this->raters_count+1);
+		$this->rating = ((float)$this->rating*($this->raters_count)+(float)$rate)/((float)$this->raters_count+1);
 		$this->raters_count++;
 	}
 

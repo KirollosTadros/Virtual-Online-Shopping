@@ -13,7 +13,7 @@ require 'action.php'; ?>
 		<body>
 		<SCRIPT type="text/javascript" src="main.js"></SCRIPT>
 			<center><h1> Welcome to Kirollos Market!</h1></center>
-			<h2 style='text-align:center'>Your current balance : <?php echo $client->get_balance(); ?>$ </h2>
+			<h2 style='text-align:center'>Your current balance : <?php echo $_SESSION['balance']; ?>$ </h2>
 			<table style = "width:100%">
 				<tr>
 					<td>
@@ -117,12 +117,12 @@ require 'action.php'; ?>
 							<td><center><h3>Cart</h3></center>
 							
 
-							<p><?php require 'market_action.php'?></p>
+							<p><?php require 'Market_action.php'?></p>
 							</td>.
 							</tr>
 							<tr>
 								<td>
-								<p>Total :<?php echo $cart->apple()*$apple->get_price() +$cart->beer()*$beer->get_price() +$cart->water()*$water->get_price() + $cart->cheese()*$cheese->get_price() ?>$ </p>
+								<p>Total :<?php echo $_SESSION['apple']*$apple->get_price() +$_SESSION['beer']*$beer->get_price() +$_SESSION['water']*$water->get_price() + $_SESSION['cheese']*$cheese->get_price() ?>$ </p>
 								<br>
 								
 								<form>

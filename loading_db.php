@@ -65,31 +65,36 @@ $beer_query = mysqli_query($conn, "SELECT * FROM item  where name = 'beer';" );
 		$cheese = new item($row['id'],$row['price'], $row['rating'], $row['raters_count']);
 	}
 
+	$_SESSION ['apple'] = 0;
+	$_SESSION ['beer'] = 0;
+	$_SESSION ['water'] = 0;
+	$_SESSION ['cheese'] = 0;
 
-	//getting client balance from database
 
-	$client = mysqli_query($conn, "SELECT * FROM person" );	
+	$_SESSION ['rated_apple'] = 0;
+	$_SESSION ['rated_beer'] = 0;
+	$_SESSION ['rated_water'] = 0;
+	$_SESSION ['rated_cheese'] = 0;
+        $_SESSION ['balance'] = 0;
+	session_start();
 
-	if (mysqli_num_rows($client) > 0) 
-	{
-		$row = mysqli_fetch_assoc($client);
-		$client = new person($row['id'],$row['balance']);
-	}
+//initialize balance first time
+if($_SESSION['balance'] == 0)
+{
+	$_SESSION['balance']+=100;
+}
+
+
+	
 		$items = array($apple, $beer, $water, $cheese);
 
 	
 	//getting stored cart
-	$cart = mysqli_query($conn, "SELECT * FROM cart WHERE id='1'" );	
 
-	if (mysqli_num_rows($cart) > 0) 
-	{
-		$row = mysqli_fetch_assoc($cart);
-		$cart = new cart($row['apple'],$row['beer'], $row['water'], $row['cheese'],$row['delivery']);
-	}
 
 	//insert new rating and editing database
 	//arguments are the item id and the rate we want to insert
-function insert_rating ($id, $rate,$items, $conn)
+function insert_rating ($id, $rate,$items ,$conn)
 {
 
 	$items[$id-1]->insert_rate($rate);
@@ -169,3 +174,4 @@ function remove_cart ($name,$cart ,$conn)
 	}	
 
 }
+		

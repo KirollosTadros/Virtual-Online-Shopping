@@ -7,23 +7,68 @@ require "loading_db.php";
 
 if (isset($_GET['cheese_drop']))
 {
-   insert_rating (4,$_GET['cheese_drop'],$items, $conn);
+   
+
+   if($_SESSION['rated_cheese']==0)
+   {
+      insert_rating (4,$_GET['cheese_drop'],$items,$conn);
+      $_SESSION['rated_cheese']=1;
+   }
+
+   else
+   {
+      $message = "Your have rated for this item before";
+      echo "<script type='text/javascript'>alert('$message');</script>";
+   }
 }
 
 if (isset($_GET['water_drop']))
 {
-   insert_rating (3,$_GET['water_drop'],$items, $conn);
+   
+
+   if($_SESSION['rated_water']==0)
+   {
+      insert_rating (3,$_GET['water_drop'],$items ,$conn);
+      $_SESSION['rated_water']=1;
+   }
+   else
+   {
+      $message = "Your have rated for this item before";
+      echo "<script type='text/javascript'>alert('$message');</script>";
+   }
 }
 
 if (isset($_GET['beer_drop']))
 {
-   insert_rating (2,$_GET['beer_drop'],$items, $conn);
+   
+
+   if($_SESSION['rated_beer']==0)
+   {
+      insert_rating (2,$_GET['beer_drop'],$items,$conn);
+      $_SESSION['rated_beer']=1;
+   }
+   else
+   {
+      $message = "Your have rated for this item before";
+      echo "<script type='text/javascript'>alert('$message');</script>";
+   }
 }
 
 
 if (isset($_GET['apple_drop']))
 {
-   insert_rating (1,$_GET['apple_drop'],$items, $conn);
+   
+
+   if($_SESSION['rated_apple']==0)
+   {
+      insert_rating (1,$_GET['apple_drop'],$items ,$conn);
+      $_SESSION['rated_apple']=1;
+   }
+   else
+   {
+      $message = "Your have rated for this item before";
+      echo "<script type='text/javascript'>alert('$message');</script>";
+   }
 }
 
 
@@ -31,23 +76,23 @@ if (isset($_GET['apple_drop']))
 //adding items to cart
 if (isset($_GET['cheese']))
 {
-   update_cart('cheese', $_GET['cheese'],$cart ,$conn);
+   $_SESSION['cheese'] += $_GET['cheese'];
 }
 
 if (isset($_GET['water']))
 {
-   update_cart('water', $_GET['water'],$cart ,$conn);
+   $_SESSION['water'] += $_GET['water'];
 }
 
 if (isset($_GET['beer']))
 {
-   update_cart('beer', $_GET['beer'],$cart ,$conn);
+   $_SESSION['beer'] += $_GET['beer'];
 
 }
 
 if (isset($_GET['apple']))
 {
-   update_cart('apple', $_GET['apple'],$cart, $conn);
+   $_SESSION['apple'] += $_GET['apple'];
 
 }
 
@@ -59,13 +104,13 @@ if (isset($_GET['apple']))
 if (isset($_GET['Pay']))
 {
 
-	if (($cart->apple() ==0) && ($cart->beer() ==0 )&& ($cart->water() ==0) && ($cart->cheese() ==0) )
+	if (($_SESSION['apple'] ==0) && ($_SESSION['beer'] ==0 )&& ($_SESSION['water'] ==0) && ($_SESSION['cheese'] ==0) )
 	{
 		$message = "Your cart is empty";
 		echo "<script type='text/javascript'>alert('$message');</script>";
 	}
 
-	if (!isset ($_GET ['delivery']))
+	else if (!isset ($_GET ['delivery']))
 	{
 		$message = "Please select pick up type";
 		echo "<script type='text/javascript'>alert('$message');</script>";
@@ -77,15 +122,27 @@ if (isset($_GET['Pay']))
 	{
 
 		$delivery = $_GET['delivery'];
-		$old_balance = $client->get_balance();
+		$old_balance = $_SESSION['balance'];
 
-		$total = ($cart->apple()*$apple->get_price())+($cart->beer()*$beer->get_price())+($cart->water()*$water->get_price())+($cart->cheese()*$cheese->get_price())+$delivery;
+		$total = ($_SESSION['apple']*$apple->get_price())+($_SESSION['beer']*$beer->get_price())+($_SESSION['water']*$water->get_price())+($_SESSION['cheese']*$cheese->get_price())+$delivery;
 
 		$new_balance = $old_balance -$total;
-			
+                if($total>$old_balance)
+                {
+                   $error = "Sorry You don't have enough balance";
+		   echo "<script type='text/javascript'>alert(\"$error\");</script>";
+                    
+                }
+                
+                else
+                {
 
-		update_balance ($new_balance,$client ,$conn);
-		empty_cart ( $cart,$conn);
+		   $_SESSION ['balance'] = $new_balance;
+		   $_SESSION['apple']=0;
+                   $_SESSION['beer']=0;
+                   $_SESSION['water']=0;
+                   $_SESSION['cheese']=0;
+                 }
 
 		
 		
@@ -103,26 +160,26 @@ if (isset($_GET['Pay']))
 //removing items from cart
 if (isset($_GET['cheese_rmv']))
 {
-   remove_cart('cheese', $cart,$conn);
+   $_SESSION['cheese'] = 0;
 }
 
 if (isset($_GET['water_rmv']))
 {
-   remove_cart('water',$cart, $conn);
+   $_SESSION['water'] = 0;
 }
 
 if (isset($_GET['beer_rmv']))
 {
-   remove_cart('beer',$cart, $conn);
+   $_SESSION['beer'] = 0;
 
  
 }
 
 if (isset($_GET['apple_rmv']))
 {
-   remove_cart('apple',$cart ,$conn);
+   $_SESSION['apple'] = 0;
 
 }
 
 
-?>
+?>	
