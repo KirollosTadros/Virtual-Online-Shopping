@@ -1,0 +1,27 @@
+table, input, button, select, option
+{
+    font-size: 28px;
+}
+
+input
+{
+    width: 120px;
+}
+
+select
+{
+    width : 50px;
+    text-align: center;
+}
+
+
+
+h1
+{
+    font-size:40px;
+}
+
+h1
+{
+    font-size:35px;
+}
